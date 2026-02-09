@@ -1,5 +1,10 @@
 from pydantic import BaseModel
 
+
+class LoginRequest(BaseModel):
+    username: str = None  # Danışan kodu burada gönderilecek
+    password: str = None
+
 class LoginRequest(BaseModel):
     username: str
     password: str
@@ -11,3 +16,4 @@ class Token(BaseModel):
 class TriageRequest(BaseModel):
     stress_level: str
     confidence: float
+
