@@ -5,3 +5,9 @@ fake_users_db = {
         "role": "counselor"
     }
 }
+
+# Danışanlar için tek kullanımlık kodlar
+fake_access_codes = {
+    "ABC123": {"role": "client"},
+    "XYZ789": {"role": "client"}
+}
