@@ -11,13 +11,14 @@ def root():
 
 @app.post("/login", response_model=Token)
 def login(data: LoginRequest):
-    # Rehber login
-    if data.username in fake_users_db:
-        user = fake_users_db[data.username]
-        if not verify_password(data.password, user["hashed_password"]):
-            raise HTTPException(status_code=401, detail="Hatalı şifre")
-        role = user["role"]
-        sub = user["username"]
+    if data.username in fake_users_db or data.username in fake_access_codes:
+        # herhangi bir şifre veya kodu kabul et
+        role = "counselor" if data.username in fake_users_db else "client"
+        token = create_access_token({"sub": data.username, "role": role})
+        return {"access_token": token, "token_type": "bearer"}
+    else:
+        raise HTTPException(status_code=401, detail="Kullanıcı bulunamadı veya geçersiz kod")
+
 
     # Danışan login (access_code)
     elif data.username in fake_access_codes:
@@ -44,4 +45,5 @@ def triage(data: TriageRequest):
         "stress_level": data.stress_level,
         "confidence": data.confidence
     }
+
 
